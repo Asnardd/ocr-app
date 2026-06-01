@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Documents;
 
+use App\Filament\Schemas\DocumentForm;
+use App\Filament\Tables\ScannedDocuments;
 use App\Models\Document;
 use App\Services\OcrService;
 use BackedEnum;
@@ -30,68 +32,18 @@ class DocumentResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                FileUpload::make('file_path')
-                    ->label('Document')
-                    ->disk('local')
-                    ->directory('documents')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'application/pdf'])
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(function (Set $set, $state): void {
-                        if (blank($state)) {
-                            return;
-                        }
-                        $result = app(OcrService::class)->analyze($state);
-                        $set('name', $result['name']);
-                        $set('description', $result['description']);
-                    }),
-
-                TextInput::make('name'),
-
-                Textarea::make('description'),
-
-                TextEntry::make('created_at')
-                    ->label('Created Date')
-                    ->dateTime(),
-
-                TextEntry::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->dateTime(),
-            ]);
+        return DocumentForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('description'),
-            ])
-            ->filters([
-                //
-            ])
-            ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+        return ScannedDocuments::configure($table);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDocuments::route('/'),
-            'create' => Pages\CreateDocument::route('/create'),
-            'edit' => Pages\EditDocument::route('/{record}/edit'),
+            'index' => Pages\ManageDocument::route('/'),
         ];
     }
 

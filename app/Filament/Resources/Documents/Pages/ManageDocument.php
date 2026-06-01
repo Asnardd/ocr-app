@@ -3,17 +3,22 @@
 namespace App\Filament\Resources\Documents\Pages;
 
 use App\Filament\Resources\Documents\DocumentResource;
-use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListDocuments extends ListRecords
+class ManageDocument extends ManageRecords
 {
     protected static string $resource = DocumentResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
     }
 }
