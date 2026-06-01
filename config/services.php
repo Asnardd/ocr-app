@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'azure_di' => [
+        'endpoint' => env('AZURE_DI_ENDPOINT'),
+        'key' => env('AZURE_DI_KEY'),
+    ],
+
 ];
