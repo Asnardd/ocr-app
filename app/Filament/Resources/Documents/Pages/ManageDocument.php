@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Documents\Pages;
 
 use App\Filament\Resources\Documents\DocumentResource;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageDocument extends ManageRecords
@@ -13,7 +13,7 @@ class ManageDocument extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-
+            Actions\CreateAction::make(),
         ];
     }
 

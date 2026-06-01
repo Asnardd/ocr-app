@@ -32,7 +32,7 @@ class OcrService
 
         return [
             'name' => $lines->first(),
-            'description' => $lines->slice(1, 3)->implode(' '),
+            'description' => $lines->slice(1, 10)->implode(' '),
         ];
     }
 }
